@@ -1,12 +1,12 @@
 "use client";
 
 import {
-    HomeOutlined,
-    PhoneOutlined,
-    PlusOutlined,
-    SafetyOutlined,
-    ShoppingCartOutlined,
-    TruckOutlined,
+  HomeOutlined,
+  PhoneOutlined,
+  PlusOutlined,
+  SafetyOutlined,
+  ShoppingCartOutlined,
+  TruckOutlined,
 } from "@ant-design/icons";
 import { Button, Divider, Rate, Spin, Tabs, Tag } from "antd";
 import Image from "next/image";
@@ -38,9 +38,13 @@ const ProductDetailPage = () => {
 
         // Load related products (same category)
         if (productData.category_id) {
-          const relatedRes = await productService.getAll(productData.category_id);
+          const relatedRes = await productService.getAll({
+            categoryId: productData.category_id,
+            page: 1,
+            pageSize: 100,
+          });
           if (relatedRes.success && relatedRes.data) {
-            const related = relatedRes.data
+            const related = relatedRes.data.data
               .filter((p: ApiProduct) => p.id !== productData.id)
               .slice(0, 4);
             setRelatedProducts(related);
@@ -123,8 +127,8 @@ const ProductDetailPage = () => {
 
   const discount = product.original_price
     ? Math.round(
-        ((product.original_price - product.price) / product.original_price) * 100
-      )
+      ((product.original_price - product.price) / product.original_price) * 100
+    )
     : 0;
 
   const tabItems = [
@@ -223,7 +227,7 @@ const ProductDetailPage = () => {
                     const borderClass = isSelected
                       ? "border-primary"
                       : "border-gray-200 hover:border-gray-300";
-                    
+
                     return (
                       <button
                         key={index}

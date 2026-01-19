@@ -26,17 +26,17 @@ class ApiClient {
     requiresAuth = false
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
-    
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    };
+
+    const headers = new Headers(options.headers);
+    if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
 
     // Add Authorization header if required
     if (requiresAuth) {
       const token = this.getToken();
       if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
+        headers.set('Authorization', `Bearer ${token}`);
       }
     }
 
@@ -53,9 +53,9 @@ class ApiClient {
       if (response.status === 401 && typeof window !== 'undefined') {
         // Don't redirect if we are simply failing a login attempt
         if (!url.includes('/auth/login')) {
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('user');
-            window.location.href = '/admin/login';
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('user');
+          window.location.href = '/admin/login';
         }
       }
 
