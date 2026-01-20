@@ -14,10 +14,10 @@ interface SearchAutocompleteProps {
   size?: "large" | "middle" | "small";
 }
 
-const SearchAutocomplete = ({ 
-  className = "", 
+const SearchAutocomplete = ({
+  className = "",
   placeholder = "Tìm kiếm sản phẩm...",
-  size = "large" 
+  size = "large"
 }: SearchAutocompleteProps) => {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState("");
@@ -80,7 +80,7 @@ const SearchAutocomplete = ({
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
     const bottom = target.scrollHeight - target.scrollTop === target.clientHeight;
-    
+
     if (bottom && hasMore && !loading && searchValue.trim()) {
       const nextPage = page + 1;
       setPage(nextPage);
@@ -99,7 +99,7 @@ const SearchAutocomplete = ({
     value: product.name,
     label: (
       <div className="flex items-center gap-3 py-2 hover:bg-gray-50 cursor-pointer">
-        <div className="relative w-12 h-12 flex-shrink-0">
+        <div className="relative w-12 h-12 shrink-0">
           <Image
             src={uploadService.getImageUrl(product.image)}
             alt={product.name}
@@ -137,6 +137,7 @@ const SearchAutocomplete = ({
       onSearch={handleSearch}
       onSelect={handleSelect}
       className={className}
+      popupMatchSelectWidth={false}
       popupClassName="search-autocomplete-dropdown"
       notFoundContent={
         loading ? (
@@ -149,7 +150,7 @@ const SearchAutocomplete = ({
           </div>
         ) : null
       }
-      dropdownRender={(menu) => (
+      popupRender={(menu) => (
         <div
           ref={dropdownRef}
           onScroll={handleScroll}
@@ -163,9 +164,8 @@ const SearchAutocomplete = ({
         <input
           type="text"
           placeholder={placeholder}
-          className={`w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary ${
-            size === "large" ? "h-12 text-base" : "h-10 text-sm"
-          }`}
+          className={`w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary ${size === "large" ? "h-12 text-base" : "h-10 text-sm"
+            }`}
         />
         <SearchOutlined className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
       </div>

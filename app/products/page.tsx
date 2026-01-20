@@ -65,7 +65,7 @@ const ProductsPage = () => {
   };
 
   // Handle filter changes
-  const handleCategoryChange = (categoryId: number | null) => {
+  const handleCategoryChange = (categoryId: number | undefined) => {
     setFilters(prev => ({ ...prev, categories: categoryId ? [categoryId] : [] }));
     setPagination(prev => ({ ...prev, current: 1 }));
   };
@@ -86,19 +86,19 @@ const ProductsPage = () => {
   useEffect(() => {
     const categoryId = searchParams.get('category_id');
     const search = searchParams.get('search');
-    
+
     if (categoryId) {
       const id = Number(categoryId);
       if (!isNaN(id)) {
         setFilters(prev => {
-           // Skip if already set to avoid loop/redundant updates
-           if (prev.categories.includes(id) && prev.categories.length === 1) return prev;
-           return { ...prev, categories: [id] };
+          // Skip if already set to avoid loop/redundant updates
+          if (prev.categories.includes(id) && prev.categories.length === 1) return prev;
+          return { ...prev, categories: [id] };
         });
         setPagination(prev => ({ ...prev, current: 1 }));
       }
     }
-    
+
     if (search !== null) {
       setSearchQuery(search);
       setPagination(prev => ({ ...prev, current: 1 }));
@@ -153,9 +153,9 @@ const ProductsPage = () => {
               <Radio.Group
                 className="flex flex-col gap-2"
                 onChange={(e) => handleCategoryChange(e.target.value)}
-                value={filters.categories.length > 0 ? filters.categories[0] : null}
+                value={filters.categories.length > 0 ? filters.categories[0] : undefined}
               >
-                <Radio value={null}>Tất cả sản phẩm</Radio>
+                <Radio value={undefined}>Tất cả sản phẩm</Radio>
                 {categories.map(category => (
                   <Radio key={category.id} value={category.id}>
                     {category.name} ({category.product_count || 0})
@@ -200,7 +200,7 @@ const ProductsPage = () => {
                           <div className="mt-2 flex items-center">
                             <span className="text-yellow-500">★</span>
                             <span className="ml-1 text-sm text-gray-600">
-                                4.5 (10 đánh giá)
+                              4.5 (10 đánh giá)
                             </span>
                           </div>
                         </div>

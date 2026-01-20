@@ -35,7 +35,7 @@ const CategoriesPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Spin size="large" tip="Đang tải danh mục..." />
+        <Spin size="large" />
       </div>
     );
   }
