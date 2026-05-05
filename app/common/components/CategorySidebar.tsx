@@ -32,7 +32,7 @@ const CategorySidebar = () => {
     key: cat.id.toString(),
     label: (
       <Link href={`/products?category_id=${cat.id}`}>
-        <span>{cat.name}</span>
+        <span className="font-bold">{cat.name}</span>
         {cat.product_count > 0 && (
           <span className="text-xs text-gray-400 ml-2">({cat.product_count})</span>
         )}

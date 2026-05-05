@@ -5,6 +5,7 @@ import { Table, Button, Modal, Form, Input, Space, Popconfirm, message } from "a
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { categoryService, Category as ApiCategory } from "../../../lib/services/category.service";
+import { slugify } from "../../../app/common/utils/slug.util";
 
 interface Category {
   key: string;
@@ -47,6 +48,12 @@ const CategoriesPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    const slug = slugify(name);
+    form.setFieldsValue({ slug });
   };
 
   const showModal = (category?: Category) => {
@@ -198,14 +205,14 @@ const CategoriesPage = () => {
             label="Tên danh mục"
             rules={[{ required: true, message: "Vui lòng nhập tên danh mục" }]}
           >
-            <Input placeholder="Camera An Ninh" />
+            <Input placeholder="Camera An Ninh" onChange={handleNameChange} />
           </Form.Item>
           <Form.Item
             name="slug"
             label="Slug"
             rules={[{ required: true, message: "Vui lòng nhập slug" }]}
           >
-            <Input placeholder="camera-an-ninh" />
+            <Input placeholder="camera-an-ninh" disabled />
           </Form.Item>
           <Form.Item
             name="description"
