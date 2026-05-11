@@ -121,14 +121,14 @@ const Header = () => {
 
             {/* Giỏ hàng */}
             <div className="flex items-center gap-3">
-              <Badge count={getTotalItems()} offset={[-5, 5]}>
+              {/* <Badge count={getTotalItems()} offset={[-5, 5]}>
                 <Button
                   type="text"
                   icon={<ShoppingCartOutlined style={{ fontSize: 24 }} />}
                   onClick={() => setCartOpen(true)}
                   className="flex items-center justify-center w-12 h-12"
                 />
-              </Badge>
+              </Badge> */}
 
               {/* Hotline - hidden on mobile */}
               <div className="hidden lg:flex flex-col items-end border-l border-gray-200 pl-4">

@@ -74,8 +74,8 @@ const Footer = () => {
                   <MailOutlined className="text-primary mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-gray-400 text-sm">Email</p>
-                    <a href="mailto:info@vanlucinfotech.vn" className="text-white hover:text-primary transition-colors text-sm">
-                      info@vanlucinfotech.vn
+                    <a href="mailto:info@vanlocinfotech.com" className="text-white hover:text-primary transition-colors text-sm">
+                      info@vanlocinfotech.com
                     </a>
                   </div>
                 </li>
@@ -84,7 +84,7 @@ const Footer = () => {
                   <div>
                     <p className="text-gray-400 text-sm">Địa chỉ</p>
                     <p className="text-white text-sm">
-                      Số 123, Đường ABC, Quận XYZ, TP. Hồ Chí Minh
+                      205/76 Thoại Ngọc Hầu, Phường Phú Thạnh, TP HCM
                     </p>
                   </div>
                 </li>
@@ -93,7 +93,7 @@ const Footer = () => {
                   <div>
                     <p className="text-gray-400 text-sm">Giờ làm việc</p>
                     <p className="text-white text-sm">
-                      8:00 - 20:00 (Thứ 2 - Chủ nhật)
+                      8:00 - 17:00 (T2 - T6), 8:00 - 12:00 (T7)
                     </p>
                   </div>
                 </li>

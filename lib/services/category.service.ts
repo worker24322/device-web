@@ -6,8 +6,10 @@ export interface Category {
   slug: string;
   description: string;
   product_count: number;
+  parent_id?: number;
   created_at: string;
   updated_at: string;
+  children?: Category[];
 }
 
 export interface CreateCategoryRequest {
@@ -25,6 +27,10 @@ export interface UpdateCategoryRequest {
 export const categoryService = {
   async getAll(): Promise<ApiResponse<Category[]>> {
     return apiClient.get<Category[]>('/categories');
+  },
+
+  async getHierarchy(): Promise<ApiResponse<Category[]>> {
+    return apiClient.get<Category[]>('/categories/hierarchy');
   },
 
   async getById(id: number): Promise<ApiResponse<Category>> {

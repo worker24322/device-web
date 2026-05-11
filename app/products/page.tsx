@@ -19,6 +19,7 @@ const ProductsPage = () => {
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 12,
@@ -43,7 +44,7 @@ const ProductsPage = () => {
           sortBy: sortBy,
           search: searchQuery || undefined,
         }),
-        categoryService.getAll(),
+        categoryService.getHierarchy(),
       ]);
 
       if (productsRes.success && productsRes.data) {
@@ -68,6 +69,16 @@ const ProductsPage = () => {
   const handleCategoryChange = (categoryId: number | undefined) => {
     setFilters(prev => ({ ...prev, categories: categoryId ? [categoryId] : [] }));
     setPagination(prev => ({ ...prev, current: 1 }));
+  };
+
+  const toggleExpanded = (categoryId: number) => {
+    const newExpanded = new Set(expandedCategories);
+    if (newExpanded.has(categoryId)) {
+      newExpanded.delete(categoryId);
+    } else {
+      newExpanded.add(categoryId);
+    }
+    setExpandedCategories(newExpanded);
   };
 
   const handleSortChange = (value: string) => {
@@ -148,20 +159,91 @@ const ProductsPage = () => {
         <Row gutter={[24, 24]}>
           {/* Categories Filter */}
           <Col xs={24} md={6}>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-4">Danh mục</h3>
-              <Radio.Group
-                className="flex flex-col gap-2"
-                onChange={(e) => handleCategoryChange(e.target.value)}
-                value={filters.categories.length > 0 ? filters.categories[0] : undefined}
-              >
-                <Radio value={undefined}>Tất cả sản phẩm</Radio>
-                {categories.map(category => (
-                  <Radio key={category.id} value={category.id}>
-                    {category.name} ({category.product_count || 0})
-                  </Radio>
-                ))}
-              </Radio.Group>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+              <div className="bg-primary p-4">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <span className="w-2 h-2 bg-white/80 rounded-full"></span>
+                  Danh mục sản phẩm
+                </h3>
+              </div>
+              
+              <div className="p-4">
+                <Radio.Group
+                  className="w-full"
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                  value={filters.categories.length > 0 ? filters.categories[0] : undefined}
+                >
+                  <div className="mb-3 p-3 rounded-lg bg-gray-50 border border-gray-200 hover:border-primary transition-colors">
+                    <Radio value={undefined} className="w-full">
+                      <span className="font-medium text-gray-700">Tất cả sản phẩm</span>
+                    </Radio>
+                  </div>
+                  
+                  {categories.map(category => (
+                    <div key={category.id} className="mb-3">
+                      <div className="group">
+                        <div 
+                          className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
+                            filters.categories.includes(category.id) 
+                              ? 'border-primary bg-primary/10' 
+                              : 'border-gray-200 hover:border-primary hover:bg-primary/5'
+                          }`}
+                          onClick={() => handleCategoryChange(category.id)}
+                        >
+                          <Radio 
+                            value={category.id} 
+                            className="flex-1 pointer-events-none"
+                          >
+                            <span className={`font-semibold transition-colors ${
+                              filters.categories.includes(category.id)
+                                ? 'text-primary'
+                                : 'text-gray-800 group-hover:text-primary'
+                            }`}>
+                              {category.name}
+                            </span>
+                            <span className="ml-2 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                              {category.product_count || 0}
+                            </span>
+                          </Radio>
+                          {category.children && category.children.length > 0 && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleExpanded(category.id);
+                              }}
+                              className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-primary transition-all duration-200 flex-shrink-0 ml-2"
+                            >
+                              <span className="text-xs">
+                                {expandedCategories.has(category.id) ? '−' : '+'}
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                        
+                        {/* Child categories */}
+                        <div className={`overflow-hidden transition-all duration-300 ${category.children && category.children.length > 0 && expandedCategories.has(category.id) ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
+                          {category.children && category.children.length > 0 && (
+                            <div className="ml-4 p-2 space-y-1">
+                              {category.children.map(child => (
+                                <div key={child.id} className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                  <Radio value={child.id} className="flex-1">
+                                    <span className="text-gray-700 hover:text-primary transition-colors">
+                                      {child.name}
+                                    </span>
+                                    <span className="ml-2 text-xs text-gray-400">
+                                      ({child.product_count || 0})
+                                    </span>
+                                  </Radio>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </Radio.Group>
+              </div>
             </div>
           </Col>
 

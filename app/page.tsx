@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "antd";
 import Container from "./common/components/layouts/Container";
 import CategorySidebar from "./common/components/CategorySidebar";
+import CategoryDropdownMenu from "./common/components/CategoryDropdownMenu";
 import Banner from "./common/components/Banner";
 import ProductsSection from "./common/components/ProductsSection";
 import { CheckCircleOutlined, MenuOutlined } from "@ant-design/icons";
