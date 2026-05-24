@@ -1,6 +1,6 @@
 import { authService } from './auth.service';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://docker.thanhandev.site/device-shop-api/api';
 
 export interface UploadResponse {
   success: boolean;
