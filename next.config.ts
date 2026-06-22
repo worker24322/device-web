@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
       //   port: "8080",
       //   pathname: "/uploads/**",
       // },
+      {
+        protocol: "https",
+        hostname: "docker.thanhandev.site",
+        pathname: "/device-shop-api/uploads/**",
+      },
     ],
     // Disable image optimization in development to avoid network issues
     // This prevents Next.js from trying to fetch images server-side
